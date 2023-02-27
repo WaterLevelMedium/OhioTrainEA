@@ -1,10 +1,5 @@
 # Ohio Train Delairment Sampling Data 
 [Direct Link](https://waterlevelmedium.github.io/OhioTrainEA/)
-----
-
-
-
-
 
 ----
 
