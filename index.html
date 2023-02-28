@@ -49,23 +49,15 @@ crossorigin=""/>
 <script src="https://unpkg.com/georaster-layer-for-leaflet/dist/georaster-layer-for-leaflet.min.js"></script>
 
 <!-- load markercluster  -->
-<link rel="stylesheet" href="assets/markerCluster.css">
+<link rel="stylesheet" href="assets/css/markerCluster.css">
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster-src.js"></script>
 
-
+ <!-- LOAD LOCAL STYLESHEET FOR LEGEND -->
+ <link rel="stylesheet" href="/assets/css/legend.css">
  <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!! END ACTIVE CDN LINKS !!!!!!!!!!!!!!!!!!!!!!! -->
 
 <style>
 
-.leaflet-tooltip.labels{
-    background-color: rgba(0,0,0,0);
-    border: transparent;
-    box-shadow: none;
-    font-size: 10px;
-    color: #50ff00;
-    font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
-
-}
 
   head {
     height: 0;
@@ -170,43 +162,22 @@ crossorigin=""/>
 
 
   <div class="offcanvas-body">
-    <table class="table">
+    <table class="table table-striped">
       <thead>
         <tr>
-          <th scope="col">Toggle</th>
-          <th scope="col">Layer</th>
-          <th scope="col">Opacity<th>
-          <th scope="col">Expand Table</th>
+          <th scope="col-1">Toggle Layer</th>
+          <th scope="col-2">Opacity<th>
+          <th scope="col-1">Toggle Legend</th>
         </tr>
       </thead>
       <tbody>
-
-      <!-- TEMPLATE FOR LAYER ENTRY -->
-      <!--
-      <tr>
-        <th scope="row">
-
-        </th>
-        <td>
-
-        </td>
-        <td>
-
-        </td>
-      </tr>
-
-          -->
-
-
-
-
-
+						<!-- START OF OFFCANVAS TABLE ROWS -->
 					<tr>
-						<th scope="row">
+						<th>
 							<div class="form-check form-switch">
 								<input class='form-check-input' onchange="toggleLayers(AirQualityPoints,AQP_clusters)" type='checkbox' role="switch" id="aqp_switch" checked>
 							 </div>
-						 </th>
+						</th>
 
 							<td>
 								 <label class='form-check-label' for="aqp_switch">Air Quality Points</label>
@@ -214,19 +185,34 @@ crossorigin=""/>
 							<td>
 								<input id="slide" type="range" min="0" max="1" step="0.01" value="1" onchange="updateLayerOpacity(AirQualityPoints, this.value)">
 							</td>
+							<td>
+								<div class="form-check form-switch">
+									<input class='form-check-input' onchange="toggleLegendItem(aqpLegend)" type='checkbox' role="switch" id="aqp_switch" checked>
+								 </div>
+							</td>
 					</tr>
 
 
-					<!-- LAYER TABLE -->
 
+					<!-- TEMPLATE FOR LAYER ENTRY -->
+		      <!--
+		      <tr>
+		        <th scope="row">
+
+		        </th>
+		        <td>
+
+		        </td>
+		        <td>
+
+		        </td>
+		      </tr>
+
+		          -->
       </tbody>
     </table>
-  </div>
-
-
-</div>
-
-  <!-- END OF LAYER OFFCANVAS -->
+ 	</div> <!-- END OF OFFCANVAS BODY  -->
+</div>   <!-- END OF OFFCANVAS FULL-->
 
 
  <!-- this is all just for e.g. -->
@@ -272,11 +258,18 @@ var options = {
 };
 
  //extra commma before name because it aligns to the bad output
-	var map = L.map('map', options);
+var map = L.map('map', options);
+
+
+// PANES
+// map.createPane('legend');
+// map.createPane('baselayer');
+//
 
 // Esri Basemap has more zoom
 var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+	// pane: 'baselayer',
 }).addTo(map);
 // var USGS_USImageryTopo = L.tileLayer('https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryTopo/MapServer/tile/{z}/{y}/{x}', {
 // 	maxZoom: 20,
@@ -327,6 +320,7 @@ function updateOpacity(value) {
 };
 function updateLayerOpacity(layer,value){
 	layer.setStyle({fillOpacity: value});
+	// value is usually just this.value
 };
 
 
@@ -365,6 +359,17 @@ function toggleLayers(layer,layer2){
   }
   toggle = !toggle;
 };
+function toggleLegendItem(layer){
+	if(!toggle){
+		layer.remove();
+	} else {
+		layer.addTo(map);
+	}
+	toggle = !toggle;
+}
+
+
+
 
 // aqp aqp_scaling
 // 0-292,293-1000,1001-2805,2806-9091,9092-30303
@@ -373,6 +378,8 @@ function toggleLayers(layer,layer2){
 // CHROMA COLOR SCALES
 var whiteToBlue = chroma.scale(['white','blue']).colors(5);
 var correctedReds = chroma.scale(['black','red','yellow','white']);
+
+
 
 
  // START LAYERS
@@ -389,14 +396,12 @@ var correctedReds = chroma.scale(['black','red','yellow','white']);
  	if ((val > 0) && (val <= 292)){
  		// set interval & reset Value
  		val = 4
- 	} else if ( val > 292 &&  val <=1000){
+ 	} else if ( val > 292 &&  val <=1000){ // ['292-1000', '1000-2805', '2805-9091', '9091-30303']
  		val = 5
  	} else if (val > 1000 && val <= 2805){
  		val = 6
- 	} else if (val > 2805 && val <= 2806){
- 		val = 7
- 	} else if (val > 2806 && val <= 9091){
- 		val = 9
+ 	} else if (val > 2805 && val <= 9091){
+ 		val = 8
  	} else if (val > 9091 && val <= 30303){
  		val = 10
  	} else {
@@ -404,16 +409,17 @@ var correctedReds = chroma.scale(['black','red','yellow','white']);
  	}
  	return val
  };
+
+// Create list of dates for air quality sampling
+ const dateList = ['020423','020523','020623','020723','020823','020923'];
+ for(let step = 10; step<=21; step++){
+	 dateList.push('02' + step + '23');
+ };
+ // air quality time scale handling
  function aqp_dateColorGradient(date){
 	 let greenToRed = chroma.scale(['#00ff00','#ff0000']).colors(18);
 	 let yellowToBlue = chroma.scale('YlGnBu').colors(18);
 	 let color;
-	 // console.log(date);
-	 // create list of dates
-	 let dateList = ['020423','020523','020623','020723','020823','020923'];
-	 for(let step = 10; step<=21; step++){
-		 dateList.push('02' + step + '23');
-	 };
 	 // iterate the list of dates to test with each points. assign color by key
 	 // this for loop is the same as for i in enumerate(dateList): and returns a list pair
 	 for(let [key, value] of Object.entries(dateList)){
@@ -423,7 +429,6 @@ var correctedReds = chroma.scale(['black','red','yellow','white']);
 		 // console.log(`${key}: ${value}`);
 		 // console.log(key, date, value);
 	 };
-
 	 return color
  };
 
@@ -434,7 +439,7 @@ var AQP_clusters = L.markerClusterGroup({
 					},
 					iconCreateFunction: function(cluster) {
 							return L.divIcon({
-								html: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path weight: 2px fill-opacity=".6" fill="#8a2be2"  d="M284.3 11.7c-15.6-15.6-40.9-15.6-56.6 0l-216 216c-15.6 15.6-15.6 40.9 0 56.6l216 216c15.6 15.6 40.9 15.6 56.6 0l216-216c15.6-15.6 15.6-40.9 0-56.6l-216-216z"/></svg><b style="color: #f00;background-color: #fff">' + cluster.getChildCount() + '</b>',
+								html: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path weight: 2px fill-opacity=".3" fill="#8a2be2"  d="M284.3 11.7c-15.6-15.6-40.9-15.6-56.6 0l-216 216c-15.6 15.6-15.6 40.9 0 56.6l216 216c15.6 15.6 40.9 15.6 56.6 0l216-216c15.6-15.6 15.6-40.9 0-56.6l-216-216z"/></svg><b style="color: #f00;background-color: #fff">' + cluster.getChildCount() + '</b>',
 								iconSize: [40, 40] ,
 								className: 'xIconBlue',
 							});
@@ -473,6 +478,56 @@ var AirQualityPoints = new L.GeoJSON.AJAX('assets/AQP_Table.geojson',{
 
 }).addTo(map);
 map.addLayer(AQP_clusters);
+
+
+const yellowToBlue = chroma.scale('YlGnBu').colors(18);
+
+// start aqplegend
+ var aqpLegend = L.control({position: 'topleft', pane: 'aqpLegend'});
+ aqpLegend.onAdd = function () {
+		 var div = L.DomUtil.create('div', 'aqpLegend');
+		 div.innerHTML += `
+			 <div class="row">
+			 	<div class="col">
+					<b>Sample Date</b>
+				</div>
+			</div>
+		 `;
+		 for(let [key, value] of Object.entries(yellowToBlue)){
+			 // let inner = ''background-color: '' + value + ''; opacity: 0.5'></i><p>Color</p>';
+			 let formatDate = dateList[key].slice(0,2) + '/' + dateList[key].slice(2,4) + '/' + dateList[key].slice(4,6);
+			 div.innerHTML += '<div class="row"><i style="background-color: ' + value + '; opacity: 1"><p>' + formatDate + '</p></i>';//<p>' + formatDate + '</p></div>';
+		 };
+
+		 let aqpCircleClasses =  ['292-1000', '1000-2805', '2805-9091', '9091-30303'];
+		 let circleSizes = [4,5,6,8,10]
+		 div.innerHTML += `
+			 <div class="row">
+				<div class="col">
+					<b>% Beyond Reporting Limit</b>
+				</div>
+			</div>
+		 `;
+		 	div.innerHTML += "<div class='row'>"
+		 	for(i in aqpCircleClasses){
+				div.innerHTML += `
+	 				<i class="circle" style="width: ` + (circleSizes[i] * 2 ) + `;height: ` + (circleSizes[i] * 2 ) +`;background:#289cc1"></i><p>` + aqpCircleClasses[i] + `%</p>
+	 		 `;
+
+			};
+			div.innerHTML +="</div>"
+
+		 // div.innerHTML += '</div>'
+		 return div;
+ };
+ aqpLegend.addTo(map);
+ // end aqplegend
+
+
+
+// RESERVED FOR ZINDEX ASSIGNMENT. DO NOT USE UNLESS BUGS OCCUR
+// map.getPane('baselayer').style.zIndex = 750;
+// map.getPane('legend').style.zIndex = 800;
 
 
 // zoom to function for marker clusters
