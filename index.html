@@ -295,16 +295,16 @@ const crossIcon = L.divIcon({
 	iconSize: [30, 30],
 	className: 'pendingMarker',
 });
-const xIconBlue = L.divIcon({
-html: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path weight: 2px fill-opacity=".8" fill="#0000FF" d="M376.6 84.5c11.3-13.6 9.5-33.8-4.1-45.1s-33.8-9.5-45.1 4.1L192 206 56.6 43.5C45.3 29.9 25.1 28.1 11.5 39.4S-3.9 70.9 7.4 84.5L150.3 256 7.4 427.5c-11.3 13.6-9.5 33.8 4.1 45.1s33.8 9.5 45.1-4.1L192 306 327.4 468.5c11.3 13.6 31.5 15.4 45.1 4.1s15.4-31.5 4.1-45.1L233.7 256 376.6 84.5z"/></svg>',
-iconSize: [15, 12] ,
-className: 'xIconBlue',
-});
+// const xIconBlue = L.divIcon({
+// html: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path weight: 2px fill-opacity=".8" fill="#0000FF" d="M376.6 84.5c11.3-13.6 9.5-33.8-4.1-45.1s-33.8-9.5-45.1 4.1L192 206 56.6 43.5C45.3 29.9 25.1 28.1 11.5 39.4S-3.9 70.9 7.4 84.5L150.3 256 7.4 427.5c-11.3 13.6-9.5 33.8 4.1 45.1s33.8 9.5 45.1-4.1L192 306 327.4 468.5c11.3 13.6 31.5 15.4 45.1 4.1s15.4-31.5 4.1-45.1L233.7 256 376.6 84.5z"/></svg>',
+// iconSize: [15, 12] ,
+// className: 'xIconBlue',
+// });
 
 const xIconCanary = L.divIcon({
 html: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path weight: 2px fill-opacity=".8" fill="#ffff99" d="M376.6 84.5c11.3-13.6 9.5-33.8-4.1-45.1s-33.8-9.5-45.1 4.1L192 206 56.6 43.5C45.3 29.9 25.1 28.1 11.5 39.4S-3.9 70.9 7.4 84.5L150.3 256 7.4 427.5c-11.3 13.6-9.5 33.8 4.1 45.1s33.8 9.5 45.1-4.1L192 306 327.4 468.5c11.3 13.6 31.5 15.4 45.1 4.1s15.4-31.5 4.1-45.1L233.7 256 376.6 84.5z"/></svg>',
 iconSize: [15, 12] ,
-className: 'xIconBlue',
+// className: 'xIconBlue',
 });
 
 
@@ -395,20 +395,22 @@ var correctedReds = chroma.scale(['black','red','yellow','white']);
  function aqp_scaling(val){
  	if ((val > 0) && (val <= 292)){
  		// set interval & reset Value
- 		val = 4
- 	} else if ( val > 292 &&  val <=1000){ // ['292-1000', '1000-2805', '2805-9091', '9091-30303']
- 		val = 5
- 	} else if (val > 1000 && val <= 2805){
  		val = 6
- 	} else if (val > 2805 && val <= 9091){
+ 	} else if ( val > 292 &&  val <=1000){ // ['292-1000', '1000-2805', '2805-9091', '9091-30303']
  		val = 8
- 	} else if (val > 9091 && val <= 30303){
+ 	} else if (val > 1000 && val <= 2805){
  		val = 10
+ 	} else if (val > 2805 && val <= 9091){
+ 		val = 12
+ 	} else if (val > 9091 && val <= 30303){
+ 		val = 14
  	} else {
  		val = 3
  	}
  	return val
  };
+
+
 
 // Create list of dates for air quality sampling
  const dateList = ['020423','020523','020623','020723','020823','020923'];
@@ -439,9 +441,11 @@ var AQP_clusters = L.markerClusterGroup({
 					},
 					iconCreateFunction: function(cluster) {
 							return L.divIcon({
-								html: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path weight: 2px fill-opacity=".3" fill="#8a2be2"  d="M284.3 11.7c-15.6-15.6-40.9-15.6-56.6 0l-216 216c-15.6 15.6-15.6 40.9 0 56.6l216 216c15.6 15.6 40.9 15.6 56.6 0l216-216c15.6-15.6 15.6-40.9 0-56.6l-216-216z"/></svg><b style="color: #f00;background-color: #fff">' + cluster.getChildCount() + '</b>',
+								html: ' <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path  weight: 2px fill-opacity="1" fill="#7df9ff "  d="M418.4 157.9c35.3-8.3 61.6-40 61.6-77.9c0-44.2-35.8-80-80-80c-43.4 0-78.7 34.5-80 77.5L136.2 151.1C121.7 136.8 101.9 128 80 128c-44.2 0-80 35.8-80 80s35.8 80 80 80c12.2 0 23.8-2.7 34.1-7.6L259.7 407.8c-2.4 7.6-3.7 15.8-3.7 24.2c0 44.2 35.8 80 80 80s80-35.8 80-80c0-27.7-14-52.1-35.4-66.4l37.8-207.7zM156.3 232.2c2.2-6.9 3.5-14.2 3.7-21.7l183.8-73.5c3.6 3.5 7.4 6.7 11.6 9.5L317.6 354.1c-5.5 1.3-10.8 3.1-15.8 5.5L156.3 232.2z"/></svg><b style="color: #f00;background-color: #fff">' + cluster.getChildCount() + '</b>', // show number of sample chems in cluster
 								iconSize: [40, 40] ,
-								className: 'xIconBlue',
+								className: 'clusterIcon',
+								// CLUSTER NODE ICON <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path weight: 2px fill-opacity="1" fill="#8a2be2"  d="M284.3 11.7c-15.6-15.6-40.9-15.6-56.6 0l-216 216c-15.6 15.6-15.6 40.9 0 56.6l216 216c15.6 15.6 40.9 15.6 56.6 0l216-216c15.6-15.6 15.6-40.9 0-56.6l-216-216z"/></svg><b style="color: #f00;background-color: #fff">
+								// DIAMOND ICON <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path  weight: 2px fill-opacity="1" fill="#8a2be2"  d="M418.4 157.9c35.3-8.3 61.6-40 61.6-77.9c0-44.2-35.8-80-80-80c-43.4 0-78.7 34.5-80 77.5L136.2 151.1C121.7 136.8 101.9 128 80 128c-44.2 0-80 35.8-80 80s35.8 80 80 80c12.2 0 23.8-2.7 34.1-7.6L259.7 407.8c-2.4 7.6-3.7 15.8-3.7 24.2c0 44.2 35.8 80 80 80s80-35.8 80-80c0-27.7-14-52.1-35.4-66.4l37.8-207.7zM156.3 232.2c2.2-6.9 3.5-14.2 3.7-21.7l183.8-73.5c3.6 3.5 7.4 6.7 11.6 9.5L317.6 354.1c-5.5 1.3-10.8 3.1-15.8 5.5L156.3 232.2z"/></svg><b style="color: #f00;background-color: #fff">
 							});
 					},
 					polygonOptions: {
@@ -500,8 +504,9 @@ const yellowToBlue = chroma.scale('YlGnBu').colors(18);
 		 };
 
 		 let aqpCircleClasses =  ['292-1000', '1000-2805', '2805-9091', '9091-30303'];
-		 let circleSizes = [4,5,6,8,10]
+		 let circleSizes = [6,8,10,12,14];
 		 div.innerHTML += `
+		 <hr class='divider'>
 			 <div class="row">
 				<div class="col">
 					<b>% Beyond Reporting Limit</b>
@@ -511,12 +516,21 @@ const yellowToBlue = chroma.scale('YlGnBu').colors(18);
 		 	div.innerHTML += "<div class='row'>"
 		 	for(i in aqpCircleClasses){
 				div.innerHTML += `
-	 				<i class="circle" style="width: ` + (circleSizes[i] * 2 ) + `;height: ` + (circleSizes[i] * 2 ) +`;background:#289cc1"></i><p>` + aqpCircleClasses[i] + `%</p>
+	 				<div class="row"><b><i class="circle" style="width: ` + (circleSizes[i] * 2 ) + `;height: ` + (circleSizes[i] * 2 ) +`;background:#289cc1"></i><p>` + aqpCircleClasses[i] + `%</p></b></div>
 	 		 `;
 
 			};
-			div.innerHTML +="</div>"
-
+			div.innerHTML +="</div>";
+			// Cluster Icon in legend
+			div.innerHTML +=`
+			<hr class='divider'>
+				<div class="row">
+					<div class="col-5"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path width=20px height=20px weight= 2px fill-opacity="1" fill="#7df9ff "  d="M418.4 157.9c35.3-8.3 61.6-40 61.6-77.9c0-44.2-35.8-80-80-80c-43.4 0-78.7 34.5-80 77.5L136.2 151.1C121.7 136.8 101.9 128 80 128c-44.2 0-80 35.8-80 80s35.8 80 80 80c12.2 0 23.8-2.7 34.1-7.6L259.7 407.8c-2.4 7.6-3.7 15.8-3.7 24.2c0 44.2 35.8 80 80 80s80-35.8 80-80c0-27.7-14-52.1-35.4-66.4l37.8-207.7zM156.3 232.2c2.2-6.9 3.5-14.2 3.7-21.7l183.8-73.5c3.6 3.5 7.4 6.7 11.6 9.5L317.6 354.1c-5.5 1.3-10.8 3.1-15.8 5.5L156.3 232.2z"/>Cluster</svg>
+					</div> -
+					<div class="col-2" id="smallFont">
+						<b>Air Quality Cluster</b>
+					</div>
+			`;
 		 // div.innerHTML += '</div>'
 		 return div;
  };
@@ -524,6 +538,145 @@ const yellowToBlue = chroma.scale('YlGnBu').colors(18);
  // end aqplegend
 
 
+
+ // PROPORTIONAL SCALING HANDLER FOR SQP
+ function sqp_scaling(val){
+ 	if ((val > 0) && (val <= 6)){
+ 		// set interval & reset Value
+ 		val = 6
+ 	} else if ( val > 6 &&  val <=37){
+ 		val = 8
+ 	} else if (val > 37 && val <= 150){ // ['0-6','6-37','37-150','150-710','710-9,900'];
+ 		val = 10
+ 	} else if (val > 150 && val <= 710){
+ 		val = 12
+ 	} else if (val > 710 && val <= 9900){
+ 		val = 14
+ 	} else {
+ 		val = 3
+ 	}
+ 	return val
+ };
+
+ function sqp_dateColorGradient(date){
+	 console.log(date);
+	// let sqpDates = ['020423','020823','021023','021223','021423']
+	let sqpDates = ['230208','230210'];
+ 	let yellowToBlue = chroma.scale('YlGnBu').colors(3);
+ 	let color;
+ 	// iterate the list of dates to test with each points. assign color by key
+ 	// this for loop is the same as for i in enumerate(dateList): and returns a list pair
+ 	for(let [key, value] of Object.entries(sqpDates)){
+ 		if (date == value){
+ 			color = yellowToBlue[key]
+ 		}
+ 		// console.log(`${key}: ${value}`);
+ 		// console.log(key, date, value);
+ 	};
+ 	return color
+ };
+
+
+ // CREATE CLUSTER GROUP OF MARKER
+ // brown fill color 8b4513
+var SQP_clusters = L.markerClusterGroup({
+					spiderLegPolylineOptions: {
+						weight: 0,
+					},
+					iconCreateFunction: function(cluster) {
+							return L.divIcon({
+								html:  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path  weight: 2px fill-opacity="1" fill="#8b4513 "  d="M418.4 157.9c35.3-8.3 61.6-40 61.6-77.9c0-44.2-35.8-80-80-80c-43.4 0-78.7 34.5-80 77.5L136.2 151.1C121.7 136.8 101.9 128 80 128c-44.2 0-80 35.8-80 80s35.8 80 80 80c12.2 0 23.8-2.7 34.1-7.6L259.7 407.8c-2.4 7.6-3.7 15.8-3.7 24.2c0 44.2 35.8 80 80 80s80-35.8 80-80c0-27.7-14-52.1-35.4-66.4l37.8-207.7zM156.3 232.2c2.2-6.9 3.5-14.2 3.7-21.7l183.8-73.5c3.6 3.5 7.4 6.7 11.6 9.5L317.6 354.1c-5.5 1.3-10.8 3.1-15.8 5.5L156.3 232.2z"/></svg><b style="color: #f00;background-color: #fff">' + cluster.getChildCount() + '</b>',
+								iconSize: [40, 40] ,
+								className: 'clusterIcon',
+							});
+					},
+					polygonOptions: {
+						stroke: false,
+						color: 'rgba(0,0,0,0)',
+					},
+	});
+
+ var SoilQualityPoints = new L.GeoJSON.AJAX('assets/tables/SQP_Table.geojson',{
+ 	 pointToLayer: function(feature, latlng){
+ 		 var out = [];
+ 		 var marker = L.circleMarker(latlng,{
+ 			 radius: aqp_scaling(feature.properties.Results_Percentage),
+ 			 weight: .1,
+ 			 color: '#f00',
+ 			 fillColor: sqp_dateColorGradient(feature.properties.Samp_No.slice(-6)),
+ 			 // fillColor: '#f00',
+ 			 fillOpacity: 1,
+ 		 });
+
+ 		 if (feature.properties){
+ 				for(key in feature.properties){
+ 					if(key != 'Results_Percentage'){
+ 						out.push(key+": "+feature.properties[key]);
+ 					} else {
+ 						out.push(key + ": "+feature.properties[key] + '%');
+ 					};
+ 				};
+ 				marker.bindPopup(out.join("<br />"),{autoPan: false})
+ 		 };
+ 		 marker.addTo(SQP_clusters);
+ 		 return marker;
+ 	 },
+
+ }).addTo(map);
+ map.addLayer(SQP_clusters);
+
+ // end points handling
+
+// start soil ponits legend
+ var sqpLegend = L.control({position: 'topleft', pane: 'sqpLegend'});
+ sqpLegend.onAdd = function () {
+	 	let yellowToBlue = chroma.scale('YlGnBu').colors(3);
+		var div = L.DomUtil.create('div', 'sqpLegend');
+		div.innerHTML += `
+			<div class="row">
+			 <div class="col">
+				 <b>Sample Date</b>
+			 </div>
+		 </div>
+		`;
+		for(let [key, value] of Object.entries(yellowToBlue)){
+			// let inner = ''background-color: '' + value + ''; opacity: 0.5'></i><p>Color</p>';
+			let formatDate = dateList[key].slice(0,2) + '/' + dateList[key].slice(2,4) + '/' + dateList[key].slice(4,6);
+			div.innerHTML += '<div class="row"><i style="background-color: ' + value + '; opacity: 1"><p>' + formatDate + '</p></i>';//<p>' + formatDate + '</p></div>';
+		};
+
+		let sqpCircleClasses = ['0-6','6-37','37-150','150-710','710-9,900'];
+		let circleSizes = [6,8,10,12,14];
+		div.innerHTML += `
+		<hr class='divider'>
+			<div class="row">
+			 <div class="col">
+				 <b>% Beyond Reporting Limit</b>
+			 </div>
+		 </div>
+		`;
+		 div.innerHTML += "<div class='row'>"
+		 for(i in sqpCircleClasses){
+			 div.innerHTML += `
+				<div class="row"><b><i class="circle" style="width: ` + (circleSizes[i] * 2 ) + `;height: ` + (circleSizes[i] * 2 ) +`;background:#289cc1"></i><p>` + sqpCircleClasses[i] + `%</p></b></div>
+			`;
+
+		 };
+		 div.innerHTML +="</div><hr class='divider'>";
+		 // Cluster Icon in legend
+		 div.innerHTML +=`
+			 <div class="row">
+				 <div class="col-5"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path width=20px height=20px weight= 2px fill-opacity="1" fill="#8b4513 "  d="M418.4 157.9c35.3-8.3 61.6-40 61.6-77.9c0-44.2-35.8-80-80-80c-43.4 0-78.7 34.5-80 77.5L136.2 151.1C121.7 136.8 101.9 128 80 128c-44.2 0-80 35.8-80 80s35.8 80 80 80c12.2 0 23.8-2.7 34.1-7.6L259.7 407.8c-2.4 7.6-3.7 15.8-3.7 24.2c0 44.2 35.8 80 80 80s80-35.8 80-80c0-27.7-14-52.1-35.4-66.4l37.8-207.7zM156.3 232.2c2.2-6.9 3.5-14.2 3.7-21.7l183.8-73.5c3.6 3.5 7.4 6.7 11.6 9.5L317.6 354.1c-5.5 1.3-10.8 3.1-15.8 5.5L156.3 232.2z"/>Cluster</svg>
+				 </div> -
+				 <div class="col-2" id="smallFont">
+					 <b>Soil Quality Cluster</b>
+				 </div>
+		 `;
+		// div.innerHTML += '</div>'
+		return div;
+ };
+ sqpLegend.addTo(map);
+ // end soil points legend
 
 // RESERVED FOR ZINDEX ASSIGNMENT. DO NOT USE UNLESS BUGS OCCUR
 // map.getPane('baselayer').style.zIndex = 750;

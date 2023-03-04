@@ -1,7 +1,7 @@
 .aqpLegend {
       line-height: 20px;
       font-size: 12px;
-      width: 120px;
+      width: 130px;
       color: #333333;
       padding: 6px 8px;
       background: white;
@@ -28,6 +28,12 @@
 			line-height: 10px;
 			margin-left: 12px;
 			}
+  .aqpLegend #smallFont{
+    font-size: 12px;
+    line-height:12.2px;
+    margin-right:12px;
+
+  }
 
   .aqpLegend .circle {
         border-radius: 60%;
@@ -35,3 +41,46 @@
         height: 16px;
         margin-top: 8px;
       }
+.sqpLegend {
+      line-height: 20px;
+      font-size: 12px;
+      width: 130px;
+      color: #333333;
+      padding: 6px 8px;
+      background: white;
+      background: rgba(255,255,255,1);
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      border-radius: 5px;
+      font-family: 'Titillium Web', sans-serif;
+      }
+.sqpLegend i {
+			width: 10px;
+			height: 10px;
+			float: left;
+			margin-left: 8px;
+			/* opacity: 0.9; */
+			}
+.sqpLegend img {
+			width: 10px;
+			height: 10px;
+			/* margin-right: 3px; */
+			float: left;
+			}
+.sqpLegend p {
+			font-size: 10px;
+			line-height: 10px;
+			margin-left: 12px;
+			}
+.sqpLegend #smallFont{
+    font-size: 12px;
+    line-height:12.2px;
+    margin-right:12px;
+
+  }
+
+.sqpLegend .circle {
+    border-radius: 60%;
+    width: 10px;
+    height: 16px;
+    margin-top: 8px;
+  }
