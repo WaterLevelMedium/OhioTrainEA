@@ -1,7 +1,58 @@
-.aqpLegend {
+ /* CURRENTLY USING MAINLEGEND FOR ALL LEGEND ENTRIES.
+ EACH LAYER HAS THEIR OWN LEGEND BUT THEY ALL
+ USE mainLegend AS THE PRIMARY CSS CLASS
+  */
+
+  .mainLegend {
+    line-height: auto;
+    height: 30%;
+    font-size: 12px;
+    width: auto;
+    color: #333333;
+    padding: 6px 8px;
+    background: white;
+    background: rgba(255,255,255,1);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+    font-family: 'Titillium Web', sans-serif;
+    }
+  .mainLegend i {
+    width: 10px;
+    height: 10px;
+    float: left;
+    margin-left: 8px;
+    /* opacity: 0.9; */
+    }
+  .mainLegend img {
+    width: 10px;
+    height: 10px;
+    /* margin-right: 3px; */
+    float: left;
+    }
+  .mainLegend p {
+    font-size: 10px;
+    line-height: 10px;
+    margin-left: 12px;
+    }
+  .mainLegend #smallFont{
+  font-size: 12px;
+  line-height:12.2px;
+  margin-right:12px;
+
+  }
+
+  .mainLegend .circle {
+      border-radius: 60%;
+      width: 10px;
+      height: 16px;
+      margin-top: 8px;
+    }
+
+
+ .aqpLegend {
       line-height: 20px;
       font-size: 12px;
-      width: 130px;
+      width: auto;
       color: #333333;
       padding: 6px 8px;
       background: white;

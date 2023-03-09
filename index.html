@@ -1,4 +1,4 @@
-<<!DOCTYPE html>
+SoilQualityLegendSoilQualityLegend<<!DOCTYPE html>
 <html lang='en'>
 <head>
 	<base href="index.html" target="_blank">
@@ -54,7 +54,10 @@ crossorigin=""/>
 
  <!-- LOAD LOCAL STYLESHEET FOR LEGEND -->
  <link rel="stylesheet" href="assets/css/legend.css">
+
  <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!! END ACTIVE CDN LINKS !!!!!!!!!!!!!!!!!!!!!!! -->
+
+	<!-- LOAD LOCAL JS -->
 
 <style>
 
@@ -165,33 +168,88 @@ crossorigin=""/>
     <table class="table table-striped">
       <thead>
         <tr>
-          <th scope="col-1">Toggle Layer</th>
-          <th scope="col-2">Opacity<th>
-          <th scope="col-1">Toggle Legend</th>
+
+          <th scope="col-1">Layer</th>
+          <th scope="col-1">Opacity<th>
+	        <th scope="col-1">Clusters</th>
+					<th scope="col-1">Points </th>
         </tr>
       </thead>
       <tbody>
 						<!-- START OF OFFCANVAS TABLE ROWS -->
 					<tr>
-						<th>
-							<div class="form-check form-switch">
-								<input class='form-check-input' onchange="toggleLayers(AirQualityPoints,AQP_clusters)" type='checkbox' role="switch" id="aqp_switch" checked>
-							 </div>
-						</th>
 
 							<td>
-								 <label class='form-check-label' for="aqp_switch">Air Quality Points</label>
+								 <label class='form-check-label' for="aqp_switch">Air Quality </br> Sampling Locations</label>
 							</td>
 							<td>
 								<input id="slide" type="range" min="0" max="1" step="0.01" value="1" onchange="updateLayerOpacity(AirQualityPoints, this.value)">
 							</td>
 							<td>
-								<div class="form-check form-switch">
-									<input class='form-check-input' onchange="toggleLegendItem(aqpLegend)" type='checkbox' role="switch" id="aqp_switch" checked>
-								 </div>
+								<input type="checkbox" onchange="toggleLegendItem(aqpLegend)" class="btn-check" id="aqpLegend_btn-check" autocomplete="off">
+								<label class="btn btn-primary" for="aqpLegend_btn-check">Show Legend</label>
+							</td>
+							<td>
+								<input type="checkbox" onchange="toggleLayer(AQP_clusters)" class="btn-check" id="aqpClusters_btn-check" autocomplete="off">
+								<label class="btn btn-primary" for="aqpClusters_btn-check">Show Clusters</label>
+							</td>
+							<td>
+								<input type="checkbox" onchange="toggleLayer(AirQualityPoints)" class="btn-check" id="aqp_btn-check" autocomplete="off">
+								<label class="btn btn-primary" for="aqp_btn-check">Show Points</label>
 							</td>
 					</tr>
 
+
+					<!-- start soils row -->
+				<tr>
+					<!-- <th>
+						<div class="form-check form-switch">
+							<input class='form-check-input' onchange="toggleLayer(SQP_clusters)" type='checkbox' role="switch" id="sqp_switch" checked>
+						 </div>
+					</th> -->
+
+						<td>
+							 <label class='form-check-label' for="sqp_switch">Soil Quality </br> Sampling Locations</label>
+						</td>
+						<td>
+							<input id="slide" type="range" min="0" max="1" step="0.01" value="1" onchange="updateLayerOpacity(SoilQualityPoints, this.value)">
+						</td>
+						<td>
+							<input type="checkbox" onchange="toggleLegendItem(SoilQualityLegend)" class="btn-check" id="sqpLegend_btn-check" autocomplete="off">
+							<label class="btn btn-primary" for="sqpLegend_btn-check">Show Legend</label>
+						</td>
+						<td>
+							<input type="checkbox" onchange="toggleLayer(SQP_clusters)" class="btn-check" id="sqpCluster_btn-check" autocomplete="off">
+							<label class="btn btn-primary" for="sqpCluster_btn-check">Show Clusters</label>
+						</td>
+						<td>
+							<input type="checkbox" onchange="toggleLayer(SoilQualityPoints)" class="btn-check" id="sqp_btn-check" autocomplete="off">
+							<label class="btn btn-primary" for="sqp_btn-check">Show Points</label>
+						</td>
+				</tr>
+
+				<tr>
+
+
+						<td>
+							 <label class='form-check-label' for="wqp_switch">Water Quality </br> Sampling Locations</label>
+						</td>
+						<td>
+							<input id="slide" type="range" min="0" max="1" step="0.01" value="1" onchange="updateLayerOpacity(WaterQualityPoints, this.value)">
+						</td>
+						<td>
+							<input type="checkbox" onchange="toggleLegendItem(wqpLegend)" class="btn-check" id="wqpLegend_btn-check" autocomplete="off">
+							<label class="btn btn-primary" for="wqpLegend_btn-check">Show Legend</label>
+						</td>
+						<td>
+							<input type="checkbox" onchange="toggleLayer(WQP_clusters)" class="btn-check" id="wqpClusters_btn-check" autocomplete="off">
+							<label class="btn btn-primary" for="wqpClusters_btn-check">Show Clusters</label>
+						</td>
+						<td>
+							<input type="checkbox" onchange="toggleLayer(WaterQualityPoints)" class="btn-check" id="wqp_btn-check" autocomplete="off">
+							<label class="btn btn-primary" for="wqp_btn-check">Show Points</label>
+						</td>
+				</tr>
 
 
 					<!-- TEMPLATE FOR LAYER ENTRY -->
@@ -413,15 +471,20 @@ var correctedReds = chroma.scale(['black','red','yellow','white']);
 
 
 // Create list of dates for air quality sampling
- const dateList = ['020423','020523','020623','020723','020823','020923'];
- for(let step = 10; step<=21; step++){
-	 dateList.push('02' + step + '23');
- };
+// REMOVED - moving datelists into each legend/function
+ // const dateList = ['020423','020523','020623','020723','020823','020923'];
+ // for(let step = 10; step<=21; step++){
+	//  dateList.push('02' + step + '23');
+ // };
  // air quality time scale handling
  function aqp_dateColorGradient(date){
 	 let greenToRed = chroma.scale(['#00ff00','#ff0000']).colors(18);
 	 let yellowToBlue = chroma.scale('YlGnBu').colors(18);
 	 let color;
+	 let dateList = ['020423','020523','020623','020723','020823','020923'];
+	 for(let step = 10; step<=21; step++){
+		dateList.push('02' + step + '23');
+	 };
 	 // iterate the list of dates to test with each points. assign color by key
 	 // this for loop is the same as for i in enumerate(dateList): and returns a list pair
 	 for(let [key, value] of Object.entries(dateList)){
@@ -441,7 +504,7 @@ var AQP_clusters = L.markerClusterGroup({
 					},
 					iconCreateFunction: function(cluster) {
 							return L.divIcon({
-								html: ' <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path  weight: 2px fill-opacity="1" fill="#7df9ff "  d="M418.4 157.9c35.3-8.3 61.6-40 61.6-77.9c0-44.2-35.8-80-80-80c-43.4 0-78.7 34.5-80 77.5L136.2 151.1C121.7 136.8 101.9 128 80 128c-44.2 0-80 35.8-80 80s35.8 80 80 80c12.2 0 23.8-2.7 34.1-7.6L259.7 407.8c-2.4 7.6-3.7 15.8-3.7 24.2c0 44.2 35.8 80 80 80s80-35.8 80-80c0-27.7-14-52.1-35.4-66.4l37.8-207.7zM156.3 232.2c2.2-6.9 3.5-14.2 3.7-21.7l183.8-73.5c3.6 3.5 7.4 6.7 11.6 9.5L317.6 354.1c-5.5 1.3-10.8 3.1-15.8 5.5L156.3 232.2z"/></svg><b style="color: #f00;background-color: #fff">' + cluster.getChildCount() + '</b>', // show number of sample chems in cluster
+								html: ' <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path  weight: 2px fill-opacity="1" fill="#f5fffa "  d="M418.4 157.9c35.3-8.3 61.6-40 61.6-77.9c0-44.2-35.8-80-80-80c-43.4 0-78.7 34.5-80 77.5L136.2 151.1C121.7 136.8 101.9 128 80 128c-44.2 0-80 35.8-80 80s35.8 80 80 80c12.2 0 23.8-2.7 34.1-7.6L259.7 407.8c-2.4 7.6-3.7 15.8-3.7 24.2c0 44.2 35.8 80 80 80s80-35.8 80-80c0-27.7-14-52.1-35.4-66.4l37.8-207.7zM156.3 232.2c2.2-6.9 3.5-14.2 3.7-21.7l183.8-73.5c3.6 3.5 7.4 6.7 11.6 9.5L317.6 354.1c-5.5 1.3-10.8 3.1-15.8 5.5L156.3 232.2z"/></svg><b style="color: #f00;background-color: #fff">' + cluster.getChildCount() + '</b>', // show number of sample chems in cluster
 								iconSize: [40, 40] ,
 								className: 'clusterIcon',
 								// CLUSTER NODE ICON <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path weight: 2px fill-opacity="1" fill="#8a2be2"  d="M284.3 11.7c-15.6-15.6-40.9-15.6-56.6 0l-216 216c-15.6 15.6-15.6 40.9 0 56.6l216 216c15.6 15.6 40.9 15.6 56.6 0l216-216c15.6-15.6 15.6-40.9 0-56.6l-216-216z"/></svg><b style="color: #f00;background-color: #fff">
@@ -480,43 +543,106 @@ var AirQualityPoints = new L.GeoJSON.AJAX('assets/AQP_Table.geojson',{
 		 return marker;
 	 },
 
-}).addTo(map);
+});//.addTo(map);
 map.addLayer(AQP_clusters);
 
 
 const yellowToBlue = chroma.scale('YlGnBu').colors(18);
 
+
+// START CONSOLIDATED LEGEND
+// TESTING THIS DO NOT DEPLOY
+// FOR WHATEVER REASON THE MAIN LEGEND IS NOT FORMATTING SUCH AS THE AQPLEGEND
+// HONESTLY CANNOT FIGURE OUT WHY
+var mainLegend = L.control({position: 'topleft', pane: 'mainLegend'});
+mainLegend.onAdd = function () {
+		var div = L.DomUtil.create('div', 'mainLegend');
+		div.innerHTML += `
+		<table class="table table-striped">
+			<thead>
+				<th scope="row"> <b> Air Quality </b> </th>
+
+			</thead>
+
+			<tbody>
+				<tr>
+					<td> Sample Date </td>
+					<td> % over Reporting Limit </td>
+				</tr>
+				<tr>
+					<td>
+				`;
+				// start establishing
+				for(let [key, value] of Object.entries(yellowToBlue)){
+					// let inner = ''background-color: '' + value + ''; opacity: 0.5'></i><p>Color</p>';
+					let formatDate = dateList[key].slice(0,2) + '/' + dateList[key].slice(2,4) + '/' + dateList[key].slice(4,6);
+					div.innerHTML += '<div class="row"><i style="background-color: ' + value + '; opacity: 1"><p>' + formatDate + '</p></i></div>';//<p>' + formatDate + '</p></div>';
+				};
+				div.innerHTML += '</td><td>';
+				let aqpCircleClasses =  ['292-1000', '1000-2805', '2805-9091', '9091-30303'];
+				let circleSizes = [6,8,10,12,14];
+				for(i in aqpCircleClasses){
+					div.innerHTML += `
+						<td><b><i class="circle" style="width: ` + (circleSizes[i] * 2 ) + `;height: ` + (circleSizes[i] * 2 ) +`;background:#289cc1"></i><p>` + aqpCircleClasses[i] + `%</p></b></td>
+				 `;
+				 };
+				 div.innerHTML += '</td>';
+				div.innerHTML += `
+				</tr>
+			</tbody>
+		</table>
+		`;
+
+		// div.innerHTML += '</div>'
+		return div;
+};
+// mainLegend.addTo(map);
+// END CONSOLITDATED LEGEND
+
+
+
+
+
 // start aqplegend
  var aqpLegend = L.control({position: 'topleft', pane: 'aqpLegend'});
  aqpLegend.onAdd = function () {
-		 var div = L.DomUtil.create('div', 'aqpLegend');
+		 var div = L.DomUtil.create('div', 'mainLegend');
 		 div.innerHTML += `
-			 <div class="row">
-			 	<div class="col">
-					<b>Sample Date</b>
+			 	<div class="row">
+					<b>Air Quality </b>
 				</div>
-			</div>
+				<hr class="divider">
+				<div class="row">
+					<b> Sample Date </b>
+				</div>
 		 `;
+		 let aqpCircleClasses =  ['292-1000', '1000-2805', '2805-9091', '9091-30303'];
+		 let circleSizes = [6,8,10,12,14];
+		 // establish primary datelist
+		 let dateList = ['020423','020523','020623','020723','020823','020923'];
+		 for(let step = 10; step<=21; step++){
+			dateList.push('02' + step + '23');
+		 };
 		 for(let [key, value] of Object.entries(yellowToBlue)){
 			 // let inner = ''background-color: '' + value + ''; opacity: 0.5'></i><p>Color</p>';
 			 let formatDate = dateList[key].slice(0,2) + '/' + dateList[key].slice(2,4) + '/' + dateList[key].slice(4,6);
-			 div.innerHTML += '<div class="row"><i style="background-color: ' + value + '; opacity: 1"><p>' + formatDate + '</p></i>';//<p>' + formatDate + '</p></div>';
-		 };
+			 div.innerHTML += '<td><div class="row"><i style="background-color: ' + value + '; opacity: 1"><p>' + formatDate + '</p></i></div></td>';//<p>' + formatDate + '</p></div>';
+		 }
 
-		 let aqpCircleClasses =  ['292-1000', '1000-2805', '2805-9091', '9091-30303'];
-		 let circleSizes = [6,8,10,12,14];
 		 div.innerHTML += `
-		 <hr class='divider'>
-			 <div class="row">
+		 	<hr class="divider">
+		 		<td>
 				<div class="col">
 					<b>% Beyond Reporting Limit</b>
 				</div>
-			</div>
+				</td>
+			</tr>
+			</tbody>
 		 `;
 		 	div.innerHTML += "<div class='row'>"
 		 	for(i in aqpCircleClasses){
 				div.innerHTML += `
-	 				<div class="row"><b><i class="circle" style="width: ` + (circleSizes[i] * 2 ) + `;height: ` + (circleSizes[i] * 2 ) +`;background:#289cc1"></i><p>` + aqpCircleClasses[i] + `%</p></b></div>
+	 				<div class="row"><b><i class="circle" style="width: ` + (circleSizes[i] * 2 ) + `;height: ` + (circleSizes[i] * 2 ) +`;background:#000"></i><p>` + aqpCircleClasses[i] + `%</p></b></div>
 	 		 `;
 
 			};
@@ -534,7 +660,7 @@ const yellowToBlue = chroma.scale('YlGnBu').colors(18);
 		 // div.innerHTML += '</div>'
 		 return div;
  };
- aqpLegend.addTo(map);
+ // aqpLegend.addTo(map);
  // end aqplegend
 
 
@@ -600,7 +726,7 @@ var SQP_clusters = L.markerClusterGroup({
  	 pointToLayer: function(feature, latlng){
  		 var out = [];
  		 var marker = L.circleMarker(latlng,{
- 			 radius: aqp_scaling(feature.properties.Results_Percentage),
+ 			 radius: sqp_scaling(feature.properties.Results_Percentage),
  			 weight: .1,
  			 color: '#f00',
  			 fillColor: sqp_dateColorGradient(feature.properties.Samp_No.slice(-6)),
@@ -622,16 +748,25 @@ var SQP_clusters = L.markerClusterGroup({
  		 return marker;
  	 },
 
- }).addTo(map);
+ });//.addTo(map);
  map.addLayer(SQP_clusters);
 
  // end points handling
 
+// [2023-03-09] change toggle switch for legend popup
+// - addd entyr for the tbal eheader in the offcanvas
 // start soil ponits legend
- var sqpLegend = L.control({position: 'topleft', pane: 'sqpLegend'});
- sqpLegend.onAdd = function () {
+ var SoilQualityLegend = L.control({position: 'topleft', pane: 'SoilQualityLegend'});
+ SoilQualityLegend.onAdd = function () {
 	 	let yellowToBlue = chroma.scale('YlGnBu').colors(3);
-		var div = L.DomUtil.create('div', 'sqpLegend');
+		var div = L.DomUtil.create('div', 'mainLegend');
+		div.innerHTML += `
+			 <div class="col">
+				 <b>Soil Quality </b>
+			 </div>
+		 </td>
+		 <hr class="divider">
+		`;
 		div.innerHTML += `
 			<div class="row">
 			 <div class="col">
@@ -639,6 +774,167 @@ var SQP_clusters = L.markerClusterGroup({
 			 </div>
 		 </div>
 		`;
+		let dateList = ['230208','230210'];
+		// removed loop becuase soil quality only has 2 dates
+		// will change if data with >2 dates gets added
+		div.innerHTML += `
+			<div class="row">
+				<i style="background-color: ` + yellowToBlue[0] + `; opacity: 1"><p>02/08/2023</p></i>
+			</div>
+			<div class="row">
+				<i style="background-color: ` +  yellowToBlue[1] + `; opacity: 1"><p>02/10/2023</p></i>
+			</div>
+
+		`;
+
+		let sqpCircleClasses = ['0-6','6-37','37-150','150-710','710-9,900'];
+		let circleSizes = [6,8,10,12,14];
+		div.innerHTML += `
+		<hr class='divider'>
+			<div class="row">
+			 <div class="col">
+				 <b>% Beyond Reporting Limit</b>
+			 </div>
+		 </div>
+		`;
+		 div.innerHTML += "<div class='row'>"
+		 for(i in sqpCircleClasses){
+			 div.innerHTML += `
+				<div class="row"><b><i class="circle" style="width: ` + (circleSizes[i] * 2 ) + `;height: ` + (circleSizes[i] * 2 ) +`;background:#000"></i><p>` + sqpCircleClasses[i] + `%</p></b></div>
+			`;
+
+		 };
+		 div.innerHTML +="</div><hr class='divider'>";
+		 // Cluster Icon in legend
+		 div.innerHTML +=`
+			 <div class="row">
+				 <div class="col-5"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path width=20px height=20px weight= 2px fill-opacity="1" fill="#8b4513 "  d="M418.4 157.9c35.3-8.3 61.6-40 61.6-77.9c0-44.2-35.8-80-80-80c-43.4 0-78.7 34.5-80 77.5L136.2 151.1C121.7 136.8 101.9 128 80 128c-44.2 0-80 35.8-80 80s35.8 80 80 80c12.2 0 23.8-2.7 34.1-7.6L259.7 407.8c-2.4 7.6-3.7 15.8-3.7 24.2c0 44.2 35.8 80 80 80s80-35.8 80-80c0-27.7-14-52.1-35.4-66.4l37.8-207.7zM156.3 232.2c2.2-6.9 3.5-14.2 3.7-21.7l183.8-73.5c3.6 3.5 7.4 6.7 11.6 9.5L317.6 354.1c-5.5 1.3-10.8 3.1-15.8 5.5L156.3 232.2z"/>Cluster</svg>
+				 </div> -
+				 <div class="col-2" id="smallFont">
+					 <b>Soil Quality Cluster</b>
+				 </div>
+		 `;
+		// div.innerHTML += '</div>'
+		return div;
+ };
+ // sqpLegend.addTo(map);
+ // end soil points legend
+
+
+
+
+  // PROPORTIONAL SCALING HANDLER FOR SQP
+  function wqp_scaling(val){
+  	if ((val > 0) && (val <= 400)){
+  		// set interval & reset Value
+  		val = 6
+  	} else if ( val > 400 &&  val <= 1800){
+  		val = 8
+  	} else if (val > 1800 && val <= 6500){ // ['0-400','400-1800','1800-6500','6500-27000','27000-30000']
+  		val = 10
+  	} else if (val > 6500 && val <= 27000){
+  		val = 12
+  	} else if (val > 27000 && val <= 30000){
+  		val = 14
+  	} else {
+  		val = 3
+  	}
+  	return val
+  };
+
+  function wqp_dateColorGradient(date){
+ 	 // console.log(date);
+ 	// let sqpDates = ['020423','020823','021023','021223','021423']
+		let dateList = ['020423','020823','021023','021223','021423']
+  	let yellowToBlue = chroma.scale('YlGnBu').colors(5);
+  	let color;
+  	// iterate the list of dates to test with each points. assign color by key
+  	// this for loop is the same as for i in enumerate(dateList): and returns a list pair
+  	for(let [key, value] of Object.entries(dateList)){
+  		if (date == value){
+  			color = yellowToBlue[key]
+  		}
+  		// console.log(`${key}: ${value}`);
+  		// console.log(key, date, value);
+  	};
+  	return color
+  };
+
+	var WQP_clusters = L.markerClusterGroup({
+						spiderLegPolylineOptions: {
+							weight: 0,
+						},
+						iconCreateFunction: function(cluster) {
+								return L.divIcon({
+									html: ' <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path  weight: 2px fill-opacity="1" fill="#0000cd "  d="M418.4 157.9c35.3-8.3 61.6-40 61.6-77.9c0-44.2-35.8-80-80-80c-43.4 0-78.7 34.5-80 77.5L136.2 151.1C121.7 136.8 101.9 128 80 128c-44.2 0-80 35.8-80 80s35.8 80 80 80c12.2 0 23.8-2.7 34.1 7.6L259.7 407.8c-2.4 7.6-3.7 15.8-3.7 24.2c0 44.2 35.8 80 80 80s80-35.8 80-80c0-27.7-14-52.1-35.4-66.4l37.8-207.7zM156.3 232.2c2.2-6.9 3.5-14.2 3.7-21.7l183.8-73.5c3.6 3.5 7.4 6.7 11.6 9.5L317.6 354.1c-5.5 1.3-10.8 3.1-15.8 5.5L156.3 232.2z"/></svg><b style="color: #f00;background-color: #fff">' + cluster.getChildCount() + '</b>', // show number of sample chems in cluster
+									iconSize: [40, 40] ,
+									className: 'clusterIcon',
+									// CLUSTER NODE ICON <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path weight: 2px fill-opacity="1" fill="#8a2be2"  d="M284.3 11.7c-15.6-15.6-40.9-15.6-56.6 0l-216 216c-15.6 15.6-15.6 40.9 0 56.6l216 216c15.6 15.6 40.9 15.6 56.6 0l216-216c15.6-15.6 15.6-40.9 0-56.6l-216-216z"/></svg><b style="color: #f00;background-color: #fff">
+									// DIAMOND ICON <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path  weight: 2px fill-opacity="1" fill="#8a2be2"  d="M418.4 157.9c35.3-8.3 61.6-40 61.6-77.9c0-44.2-35.8-80-80-80c-43.4 0-78.7 34.5-80 77.5L136.2 151.1C121.7 136.8 101.9 128 80 128c-44.2 0-80 35.8-80 80s35.8 80 80 80c12.2 0 23.8-2.7 34.1-7.6L259.7 407.8c-2.4 7.6-3.7 15.8-3.7 24.2c0 44.2 35.8 80 80 80s80-35.8 80-80c0-27.7-14-52.1-35.4-66.4l37.8-207.7zM156.3 232.2c2.2-6.9 3.5-14.2 3.7-21.7l183.8-73.5c3.6 3.5 7.4 6.7 11.6 9.5L317.6 354.1c-5.5 1.3-10.8 3.1-15.8 5.5L156.3 232.2z"/></svg><b style="color: #f00;background-color: #fff">
+								});
+						},
+						polygonOptions: {
+							stroke: false,
+							color: 'rgba(0,0,0,0)',
+						},
+		});
+
+var WaterQualityPoints = new L.GeoJSON.AJAX('assets/tables/WQP_Table.geojson',{
+  	 pointToLayer: function(feature, latlng){
+  		 var out = [];
+  		 var marker = L.circleMarker(latlng,{
+  			 radius: wqp_scaling(feature.properties.Results_Percentage),
+  			 weight: .1,
+  			 color: '#f00',
+  			 fillColor: wqp_dateColorGradient(feature.properties.Samp_No.slice(-6)),
+  			 // fillColor: '#f00',
+  			 fillOpacity: 1,
+  		 });
+
+  		 if (feature.properties){
+  				for(key in feature.properties){
+  					if(key != 'Results_Percentage'){
+  						out.push(key+": "+feature.properties[key]);
+  					} else {
+  						out.push(key + ": "+feature.properties[key] + '%');
+  					};
+  				};
+  				marker.bindPopup(out.join("<br />"),{autoPan: false})
+  		 };
+  		 marker.addTo(WQP_clusters);
+  		 return marker;
+  	 },
+
+  });//.addTo(map);
+  map.addLayer(WQP_clusters);
+
+  // end points handling
+
+// start water quality points legend
+// start soil ponits legend
+ var wqpLegend = L.control({position: 'topleft', pane: 'wqpLegend'});
+ wqpLegend.onAdd = function () {
+	 	let yellowToBlue = chroma.scale('YlGnBu').colors(4);
+		var div = L.DomUtil.create('div', 'mainLegend');
+		div.innerHTML += `
+			 <div class="col">
+				 <b>Water Quality </b>
+			 </div>
+		 </td>
+		 <hr class="divider">
+		`;
+		div.innerHTML += `
+			<div class="row">
+			 <div class="col">
+				 <b>Sample Date</b>
+			 </div>
+		 </div>
+		`;
+		let dateList = ['020423','020823','021023','021223','021423']
+		// let dateList = ['020423','020523','020623','020723','020823','020923']; // aqpLegend dates
+	 	 // for(let step = 10; step<=21; step++){
+	 		// dateList.push('02' + step + '23');
+	 	 // };
 		for(let [key, value] of Object.entries(yellowToBlue)){
 			// let inner = ''background-color: '' + value + ''; opacity: 0.5'></i><p>Color</p>';
 			let formatDate = dateList[key].slice(0,2) + '/' + dateList[key].slice(2,4) + '/' + dateList[key].slice(4,6);
@@ -658,7 +954,7 @@ var SQP_clusters = L.markerClusterGroup({
 		 div.innerHTML += "<div class='row'>"
 		 for(i in sqpCircleClasses){
 			 div.innerHTML += `
-				<div class="row"><b><i class="circle" style="width: ` + (circleSizes[i] * 2 ) + `;height: ` + (circleSizes[i] * 2 ) +`;background:#289cc1"></i><p>` + sqpCircleClasses[i] + `%</p></b></div>
+				<div class="row"><b><i class="circle" style="width: ` + (circleSizes[i] * 2 ) + `;height: ` + (circleSizes[i] * 2 ) +`;background:#000"></i><p>` + sqpCircleClasses[i] + `%</p></b></div>
 			`;
 
 		 };
@@ -666,7 +962,7 @@ var SQP_clusters = L.markerClusterGroup({
 		 // Cluster Icon in legend
 		 div.innerHTML +=`
 			 <div class="row">
-				 <div class="col-5"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path width=20px height=20px weight= 2px fill-opacity="1" fill="#8b4513 "  d="M418.4 157.9c35.3-8.3 61.6-40 61.6-77.9c0-44.2-35.8-80-80-80c-43.4 0-78.7 34.5-80 77.5L136.2 151.1C121.7 136.8 101.9 128 80 128c-44.2 0-80 35.8-80 80s35.8 80 80 80c12.2 0 23.8-2.7 34.1-7.6L259.7 407.8c-2.4 7.6-3.7 15.8-3.7 24.2c0 44.2 35.8 80 80 80s80-35.8 80-80c0-27.7-14-52.1-35.4-66.4l37.8-207.7zM156.3 232.2c2.2-6.9 3.5-14.2 3.7-21.7l183.8-73.5c3.6 3.5 7.4 6.7 11.6 9.5L317.6 354.1c-5.5 1.3-10.8 3.1-15.8 5.5L156.3 232.2z"/>Cluster</svg>
+				 <div class="col-5"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path width=20px height=20px weight= 2px fill-opacity="1" fill="#0000cd "  d="M418.4 157.9c35.3-8.3 61.6-40 61.6-77.9c0-44.2-35.8-80-80-80c-43.4 0-78.7 34.5-80 77.5L136.2 151.1C121.7 136.8 101.9 128 80 128c-44.2 0-80 35.8-80 80s35.8 80 80 80c12.2 0 23.8-2.7 34.1-7.6L259.7 407.8c-2.4 7.6-3.7 15.8-3.7 24.2c0 44.2 35.8 80 80 80s80-35.8 80-80c0-27.7-14-52.1-35.4-66.4l37.8-207.7zM156.3 232.2c2.2-6.9 3.5-14.2 3.7-21.7l183.8-73.5c3.6 3.5 7.4 6.7 11.6 9.5L317.6 354.1c-5.5 1.3-10.8 3.1-15.8 5.5L156.3 232.2z"/>Cluster</svg>
 				 </div> -
 				 <div class="col-2" id="smallFont">
 					 <b>Soil Quality Cluster</b>
@@ -675,8 +971,10 @@ var SQP_clusters = L.markerClusterGroup({
 		// div.innerHTML += '</div>'
 		return div;
  };
- sqpLegend.addTo(map);
- // end soil points legend
+// wqpLegend.addTo(map);
+ // end water qwuality points leygend
+
+
 
 // RESERVED FOR ZINDEX ASSIGNMENT. DO NOT USE UNLESS BUGS OCCUR
 // map.getPane('baselayer').style.zIndex = 750;
